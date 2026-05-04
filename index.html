@@ -767,6 +767,24 @@ function buildHome(){
   aiCard.innerHTML=`<div style="width:44px;height:44px;border-radius:13px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none">${ICONS.sparkle.replace(/COLOR/g,'white')}</svg></div><div><p style="color:white;font-weight:900;font-size:14px;margin-bottom:2px;">CircleAI is here! ✨</p><p style="color:rgba(255,255,255,.75);font-size:12px;font-weight:600;">Ask me anything — campus life, app tips, or just chat</p></div>`;
   scroll.appendChild(aiCard);
 
+  // Live Campus Chat card
+  const liveCard=el('div',{style:{background:'linear-gradient(135deg,#0f4c2a,var(--green))',borderRadius:'20px',padding:'14px 18px',marginBottom:'20px',display:'flex',alignItems:'center',gap:'14px',cursor:'pointer'},onClick:()=>{STATE.showRealChat=true;render();}});
+  liveCard.innerHTML=`<div style="width:44px;height:44px;border-radius:13px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px;">🔴</div><div><p style="color:white;font-weight:900;font-size:14px;margin-bottom:2px;">Live Campus Chat</p><p style="color:rgba(255,255,255,.8);font-size:12px;font-weight:600;">Real students + AI personas · Join now</p></div>`;
+  scroll.appendChild(liveCard);
+  const moodBox=el('div',{style:{background:'var(--purple-pale)',borderRadius:'20px',padding:'16px',marginBottom:'20px'}});
+  moodBox.innerHTML=`<p style="font-size:13px;font-weight:800;color:var(--purple);margin-bottom:12px;">How are you feeling today?</p>`;
+  const moodRow=el('div',{style:{display:'flex',gap:'6px',overflowX:'auto',paddingBottom:'2px'}});
+  const tipBox=el('div',{style:{marginTop:'0',maxHeight:'0',overflow:'hidden',transition:'all .3s'}});
+  if(STATE.selectedMood!==null){
+    tipBox.style.maxHeight='120px';tipBox.style.marginTop='12px';
+    if(STATE.moodAILoading){
+      tipBox.innerHTML=`<div style="padding:10px 12px;background:white;border-radius:12px;border-left:3px solid var(--purple);font-size:12px;color:var(--purple);font-weight:700;line-height:1.4;display:flex;align-items:center;gap:8px;"><span class="ai-spinner" style="border-color:rgba(124,58,237,.3);border-top-color:var(--purple);"></span> AI is thinking about you...</div>`;
+    } else if(STATE.moodAIResponse){
+      tipBox.innerHTML=`<div style="padding:10px 12px;background:white;border-radius:12px;border-left:3px solid var(--purple);font-size:12px;color:var(--gray-700);font-weight:600;line-height:1.5;"><span style="font-size:10px;color:var(--purple);font-weight:800;display:block;margin-bottom:4px;">✨ AI WELLNESS</span>${STATE.moodAIResponse}</div>`;
+    } else {
+      tipBox.innerHTML=`<div style="padding:8px 12px;background:white;border-radius:12px;border-left:3px solid var(--purple);font-size:12px;color:var(--gray-700);font-weight:600;line-height:1.4;">${MOODS[STATE.selectedMood].tip}</div>`;
+    }
+  }
   MOODS.forEach((m,i)=>{
     const btn=el('button',{className:'mood-btn'+(STATE.selectedMood===i?' sel':''),onClick:async()=>{
       STATE.selectedMood=STATE.selectedMood===i?null:i;
