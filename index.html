@@ -1,586 +1,486 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Menu | Lumière</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { background: #f4f1ea; color: #1a1a18; font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRON AURA | Elite Indian Fitness</title>
+    
+    <!-- Fonts & SEO -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS 4.0 CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Animate On Scroll (AOS) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-    /* Page Transition */
-    #page-transition { position: fixed; inset: 0; background: #1a1a18; z-index: 9999; transform: translateY(0); transition: transform 0.7s cubic-bezier(0.76, 0, 0.24, 1); pointer-events: none; }
-    #page-transition.out { transform: translateY(-100%); }
+    <style type="text/tailwindcss">
+        @theme {
+            --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+            --font-display: "Outfit", sans-serif;
+            --color-brand-black: #0A0A0A;
+            --color-brand-red: #FF2E2E;
+            --color-brand-grey: #1A1A1A;
+        }
 
-    /* Nav */
-    nav { position: fixed; top: 0; width: 100%; z-index: 100; padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; transition: all 0.5s ease; }
-    nav.scrolled { background: rgba(244,241,234,0.9); backdrop-filter: blur(20px); padding: 1.2rem 3rem; border-bottom: 1px solid rgba(26,26,24,0.07); }
-    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; letter-spacing: -0.03em; text-transform: uppercase; text-decoration: none; color: inherit; }
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-    .nav-links a { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 500; opacity: 0.4; transition: opacity 0.3s; text-decoration: none; color: inherit; }
-    .nav-links a:hover, .nav-links a.active { opacity: 1; }
-    .nav-cta { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; padding: 0.6rem 1.4rem; border: 1px solid #1a1a18; border-radius: 999px; cursor: pointer; transition: all 0.3s; background: transparent; color: #1a1a18; text-decoration: none; }
-    .nav-cta:hover { background: #1a1a18; color: #f4f1ea; }
+        @layer base {
+            html { scroll-behavior: smooth; }
+            body { 
+                @apply bg-brand-black text-white font-sans antialiased; 
+                overflow-x: hidden;
+            }
+            h1, h2, h3, h4 { @apply font-display tracking-tighter uppercase italic font-black; }
+        }
 
-    /* Menu Hero */
-    .menu-hero { background: #1a1a18; color: #f4f1ea; padding: 12rem 3rem 6rem; position: relative; overflow: hidden; }
-    .menu-hero::before { content: 'MENU'; position: absolute; right: -2%; top: 50%; transform: translateY(-50%); font-family: 'Playfair Display', serif; font-size: 30vw; font-weight: 900; opacity: 0.04; line-height: 1; pointer-events: none; }
-    .menu-hero-inner { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: end; }
-    .menu-hero-eyebrow { font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: #b8935a; }
-    .menu-hero-title { font-family: 'Playfair Display', serif; font-size: clamp(48px, 7vw, 100px); font-weight: 900; line-height: 0.88; letter-spacing: -0.03em; text-transform: uppercase; margin-top: 1rem; }
-    .menu-hero-title .italic-word { font-weight: 400; font-style: italic; text-transform: lowercase; color: #b8935a; }
-    .menu-hero-desc { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-style: italic; font-weight: 300; opacity: 0.6; line-height: 1.7; margin-top: 1rem; }
-    .menu-hero-note { font-size: 0.75rem; opacity: 0.4; margin-top: 2rem; line-height: 1.7; }
+        @layer utilities {
+            .glass-dark { @apply bg-black/60 backdrop-blur-2xl border-b border-white/5; }
+            .text-glow { text-shadow: 0 0 20px rgba(255, 46, 46, 0.4); }
+            .text-outline { 
+                -webkit-text-stroke: 1px white; 
+                color: transparent; 
+            }
+            .bg-mesh {
+                background: radial-gradient(at 0% 0%, rgba(255, 46, 46, 0.1) 0px, transparent 50%),
+                            radial-gradient(at 100% 0%, rgba(255, 46, 46, 0.05) 0px, transparent 50%);
+            }
+        }
 
-    /* Category tabs */
-    .cat-tabs-wrap { background: #1a1a18; padding: 0 3rem 3rem; position: sticky; top: 68px; z-index: 50; }
-    .cat-tabs { max-width: 1400px; margin: 0 auto; display: flex; gap: 3rem; border-top: 1px solid rgba(244,241,234,0.08); padding-top: 2rem; }
-    .cat-tab { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; color: #f4f1ea; opacity: 0.3; cursor: pointer; padding-bottom: 0.5rem; border-bottom: 2px solid transparent; transition: all 0.3s; background: none; border-left: none; border-right: none; border-top: none; }
-    .cat-tab.active { opacity: 1; border-bottom-color: #b8935a; }
-    .cat-tab:hover { opacity: 0.8; }
+        /* Loading Screen Animation */
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: #0A0A0A;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease;
+        }
 
-    /* Menu body */
-    .menu-body { max-width: 1400px; margin: 0 auto; padding: 6rem 3rem; }
-    .menu-category { display: none; }
-    .menu-category.active { display: block; }
+        .loader-circle {
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(255, 46, 46, 0.1);
+            border-top: 4px solid #FF2E2E;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
 
-    /* Category header */
-    .cat-header { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; margin-bottom: 5rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(26,26,24,0.1); }
-    .cat-img { height: 380px; border-radius: 2rem; overflow: hidden; }
-    .cat-img img { width: 100%; height: 100%; object-fit: cover; }
-    .cat-title { font-family: 'Playfair Display', serif; font-size: clamp(36px, 4vw, 64px); font-weight: 900; line-height: 0.9; text-transform: uppercase; }
-    .cat-title .italic-word { font-weight: 400; font-style: italic; text-transform: lowercase; color: #b8935a; }
-    .cat-subtitle { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-style: italic; opacity: 0.6; margin-top: 1.5rem; line-height: 1.7; }
-    .cat-header-text { display: flex; flex-direction: column; justify-content: center; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    /* Menu items grid */
-    .items-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-    .menu-item { padding: 2.2rem 0; border-bottom: 1px solid rgba(26,26,24,0.08); display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: start; transition: all 0.3s; cursor: default; position: relative; }
-    .menu-item::before { content: ''; position: absolute; bottom: 0; left: -1.5rem; width: 0; height: 100%; background: rgba(26,26,24,0.02); transition: width 0.4s ease; border-radius: 0.5rem; }
-    .menu-item:hover::before { width: calc(100% + 3rem); }
-    .item-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; line-height: 1.2; }
-    .item-desc { font-size: 0.78rem; opacity: 0.5; margin-top: 0.4rem; font-style: italic; line-height: 1.5; }
-    .item-tags { display: flex; gap: 0.4rem; margin-top: 0.6rem; flex-wrap: wrap; }
-    .item-tag { font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.2rem 0.5rem; border-radius: 999px; background: rgba(184,147,90,0.12); color: #b8935a; font-weight: 600; }
-    .item-price { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-style: italic; color: #b8935a; white-space: nowrap; }
+        /* Custom Hover Effects */
+        .program-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            width: 0;
+            background: #FF2E2E;
+            transition: width 0.5s ease;
+        }
+        .program-card:hover::after { width: 100%; }
 
-    /* Divider */
-    .section-divider { text-align: center; padding: 2rem 0 3rem; font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.3; }
-    .section-divider::before, .section-divider::after { content: '— '; }
-
-    /* Callout strip */
-    .menu-callout { background: #b8935a; color: #f4f1ea; padding: 4rem 3rem; margin-top: 6rem; border-radius: 2rem; display: flex; justify-content: space-between; align-items: center; gap: 2rem; }
-    .callout-text { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-style: italic; font-weight: 400; }
-    .callout-link { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; padding: 0.8rem 1.8rem; border: 1.5px solid #f4f1ea; border-radius: 999px; color: #f4f1ea; text-decoration: none; transition: all 0.3s; white-space: nowrap; }
-    .callout-link:hover { background: #f4f1ea; color: #b8935a; }
-
-    /* Footer */
-    footer { background: #1a1a18; color: #f4f1ea; padding: 5rem 3rem 3rem; margin-top: 6rem; }
-    .footer-inner { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; gap: 4rem; padding-bottom: 4rem; border-bottom: 1px solid rgba(244,241,234,0.08); }
-    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; }
-    .footer-tagline { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; opacity: 0.4; margin-top: 1rem; line-height: 1.6; }
-    .footer-heading { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: #b8935a; margin-bottom: 1.5rem; }
-    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
-    .footer-links a { font-size: 0.85rem; opacity: 0.5; text-decoration: none; color: inherit; transition: opacity 0.3s; }
-    .footer-links a:hover { opacity: 1; }
-    .footer-address { font-size: 0.85rem; opacity: 0.5; line-height: 1.8; font-style: italic; }
-    .footer-bottom { max-width: 1400px; margin: 2rem auto 0; display: flex; justify-content: space-between; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.2; }
-
-    /* Reveal animations */
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1); }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-
-    @media (max-width: 900px) {
-      .menu-hero-inner { grid-template-columns: 1fr; gap: 2rem; }
-      .cat-header { grid-template-columns: 1fr; }
-      .items-grid { grid-template-columns: 1fr; }
-      nav { padding: 1.5rem; }
-      .nav-links, .nav-cta { display: none; }
-      .menu-hero { padding: 8rem 1.5rem 4rem; }
-      .cat-tabs-wrap { padding: 0 1.5rem 2rem; top: 55px; }
-      .menu-body { padding: 4rem 1.5rem; }
-      .menu-callout { flex-direction: column; }
-      .footer-inner { grid-template-columns: 1fr 1fr; }
-    }
-  </style>
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0A0A0A; }
+        ::-webkit-scrollbar-thumb { background: #1A1A1A; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #FF2E2E; }
+    </style>
 </head>
 <body>
 
-<div id="page-transition"></div>
-
-<nav id="navbar">
-  <a href="index.html" class="nav-logo">Lumière</a>
-  <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="story.html">Story</a></li>
-    <li><a href="menu.html" class="active">Menu</a></li>
-    <li><a href="reservations.html">Visit</a></li>
-  </ul>
-  <a href="reservations.html" class="nav-cta">Reserve a Table</a>
-</nav>
-
-<!-- Menu Hero -->
-<div class="menu-hero">
-  <div class="menu-hero-inner">
-    <div>
-      <p class="menu-hero-eyebrow reveal">The Full Collection · Series '26</p>
-      <h1 class="menu-hero-title reveal reveal-delay-1">
-        Curated<br /><span class="italic-word">Liquids</span><br />&amp; Bites
-      </h1>
-    </div>
-    <div class="reveal reveal-delay-2">
-      <p class="menu-hero-desc">"We don't just make coffee — we translate soil, altitude, and rainfall into something you can hold in your hands."</p>
-      <p class="menu-hero-note">All items prepared fresh daily. Seasonal availability may vary.<br />We are happy to accommodate dietary requirements — please ask our team.</p>
-    </div>
-  </div>
-</div>
-
-<!-- Category Tabs (sticky on dark bg) -->
-<div class="cat-tabs-wrap">
-  <div class="cat-tabs">
-    <button class="cat-tab active" onclick="switchCat('coffee', this)">Coffee &amp; Drinks</button>
-    <button class="cat-tab" onclick="switchCat('bakery', this)">Bakery</button>
-    <button class="cat-tab" onclick="switchCat('kitchen', this)">Kitchen</button>
-    <button class="cat-tab" onclick="switchCat('specials', this)">Seasonal Specials</button>
-  </div>
-</div>
-
-<!-- Menu Body -->
-<div class="menu-body">
-
-  <!-- COFFEE -->
-  <div id="cat-coffee" class="menu-category active">
-    <div class="cat-header reveal">
-      <div class="cat-img">
-        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1200" alt="Coffee" loading="lazy" />
-      </div>
-      <div class="cat-header-text">
-        <span style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#b8935a;">Coffee &amp; Drinks</span>
-        <h2 class="cat-title" style="margin-top:0.8rem;">The <span class="italic-word">Daily</span> Cup</h2>
-        <p class="cat-subtitle">We roast in small batches three times daily. Every cup reflects the terroir of its origin — unfiltered, unapologetic.</p>
-      </div>
+    <!-- Loading Screen -->
+    <div id="loader">
+        <div class="loader-circle"></div>
+        <div class="mt-8">
+            <span class="text-3xl font-display font-black italic uppercase tracking-tighter">
+                IRON<span class="text-brand-red">AURA</span>
+            </span>
+        </div>
     </div>
 
-    <div class="section-divider">Espresso Classics</div>
-    <div class="items-grid">
-      <div class="menu-item reveal">
-        <div>
-          <div class="item-name">Gold Leaf Espresso</div>
-          <div class="item-desc">Double shot, single origin Ethiopian Yirgacheffe</div>
-          <div class="item-tags"><span class="item-tag">Signature</span><span class="item-tag">Vegan</span></div>
+    <!-- Ticker Top Bar -->
+    <div class="h-14 w-full flex border-b border-white/5 bg-[#1A1A1A]/30 backdrop-blur-lg overflow-hidden fixed top-0 z-[60]">
+        <div class="w-1/4 min-w-[200px] border-r border-white/5 flex items-center px-10 gap-3">
+            <div class="w-2 h-2 bg-brand-red animate-pulse rounded-full"></div>
+            <span class="text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">Live: Iron Performance</span>
         </div>
-        <div class="item-price">$5.50</div>
-      </div>
-      <div class="menu-item reveal reveal-delay-1">
-        <div>
-          <div class="item-name">Cortado</div>
-          <div class="item-desc">Equal parts espresso and warm whole milk, no foam</div>
-          <div class="item-tags"><span class="item-tag">Classic</span></div>
+        <div class="flex-1 flex items-center gap-12 animate-marquee">
+            <span class="text-[11px] font-medium opacity-20 uppercase tracking-[0.4em] whitespace-nowrap">
+                NO PAIN NO GLORY • BEYOND LIMITS • UNLEASH THE BEAST • IRON AURA ELITE • NO PAIN NO GLORY • BEYOND LIMITS • 
+            </span>
         </div>
-        <div class="item-price">$4.75</div>
-      </div>
-      <div class="menu-item reveal">
-        <div>
-          <div class="item-name">Flat White</div>
-          <div class="item-desc">Ristretto shots, velvety microfoam, Australian-style</div>
-          <div class="item-tags"><span class="item-tag">Classic</span></div>
-        </div>
-        <div class="item-price">$5.25</div>
-      </div>
-      <div class="menu-item reveal reveal-delay-1">
-        <div>
-          <div class="item-name">Macchiato</div>
-          <div class="item-desc">Double espresso, small cloud of hand-steamed milk</div>
-        </div>
-        <div class="item-price">$4.50</div>
-      </div>
     </div>
 
-    <div class="section-divider">Signature Lattes</div>
-    <div class="items-grid">
-      <div class="menu-item reveal">
-        <div>
-          <div class="item-name">Lavender Honey Latte</div>
-          <div class="item-desc">Provence lavender syrup, wildflower honey, oat milk</div>
-          <div class="item-tags"><span class="item-tag">Staff Pick</span><span class="item-tag">Vegan Option</span></div>
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed top-14 left-0 w-full z-50 transition-all duration-500 border-b border-white/5 py-6">
+        <div class="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-8 h-8 bg-brand-red rounded-sm rotate-45 flex items-center justify-center transition-transform duration-700 group-hover:rotate-[225deg]">
+                    <div class="w-3 h-3 bg-black -rotate-45"></div>
+                </div>
+                <span class="text-2xl font-display font-black tracking-tighter uppercase italic">
+                    IRON<span class="text-brand-red">AURA</span>
+                </span>
+            </a>
+
+            <div class="hidden md:flex items-center gap-10">
+                <a href="#home" class="nav-link text-[11px] font-bold tracking-[0.2em] uppercase text-white/70 hover:text-white transition-colors">Home</a>
+                <a href="#programs" class="nav-link text-[11px] font-bold tracking-[0.2em] uppercase text-white/70 hover:text-white transition-colors">Programs</a>
+                <a href="#trainers" class="nav-link text-[11px] font-bold tracking-[0.2em] uppercase text-white/70 hover:text-white transition-colors">Trainers</a>
+                <a href="#stats" class="nav-link text-[11px] font-bold tracking-[0.2em] uppercase text-white/70 hover:text-white transition-colors">Results</a>
+                <a href="#pricing" class="nav-link text-[11px] font-bold tracking-[0.2em] uppercase text-white/70 hover:text-white transition-colors">Membership</a>
+                <button class="px-6 py-2 border border-brand-red text-brand-red text-[10px] font-bold uppercase tracking-widest hover:bg-brand-red hover:text-white transition-all shadow-[0_0_15px_rgba(255,46,46,0.2)]">
+                    Join the Elite
+                </button>
+            </div>
+
+            <!-- Mobile Toggle -->
+            <button class="md:hidden text-white" onclick="toggleMobileMenu()">
+                <i data-lucide="menu" id="menu-icon"></i>
+            </button>
         </div>
-        <div class="item-price">$6.50</div>
-      </div>
-      <div class="menu-item reveal reveal-delay-1">
-        <div>
-          <div class="item-name">Cardamom Rose Latte</div>
-          <div class="item-desc">Ground cardamom, rose water, steamed whole milk</div>
-          <div class="item-tags"><span class="item-tag">New</span></div>
-        </div>
-        <div class="item-price">$6.75</div>
-      </div>
-      <div class="menu-item reveal">
-        <div>
-          <div class="item-name">Black Sesame Latte</div>
-          <div class="item-desc">Japanese black sesame paste, espresso, oat milk foam</div>
-          <div class="item-tags"><span class="item-tag">Seasonal</span><span class="item-tag">Vegan</span></div>
-        </div>
-        <div class="item-price">$7.00</div>
-      </div>
-      <div class="menu-item reveal reveal-delay-1">
-        <div>
-          <div class="item-name">Brown Sugar Cinnamon Latte</div>
-          <div class="item-desc">House brown sugar syrup, Ceylon cinnamon, whole milk</div>
-        </div>
-        <div class="item-price">$6.25</div>
-      </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-brand-black z-[100] hidden flex flex-col items-center justify-center gap-8">
+        <button class="absolute top-10 right-10 text-white" onclick="toggleMobileMenu()">
+            <i data-lucide="x"></i>
+        </button>
+        <a href="#home" onclick="toggleMobileMenu()" class="text-4xl font-display font-black italic uppercase">Home</a>
+        <a href="#programs" onclick="toggleMobileMenu()" class="text-4xl font-display font-black italic uppercase">Programs</a>
+        <a href="#trainers" onclick="toggleMobileMenu()" class="text-4xl font-display font-black italic uppercase">Trainers</a>
+        <a href="#pricing" onclick="toggleMobileMenu()" class="text-4xl font-display font-black italic uppercase">Pricing</a>
+        <button class="mt-4 px-10 py-4 bg-brand-red text-black font-black uppercase italic tracking-tighter shadow-lg">Join Now</button>
     </div>
 
-    <div class="section-divider">Cold &amp; Alternative</div>
-    <div class="items-grid">
-      <div class="menu-item reveal">
-        <div>
-          <div class="item-name">Salted Cream Cold Brew</div>
-          <div class="item-desc">18-hour steep, house-made sea salt cold foam</div>
-          <div class="item-tags"><span class="item-tag">Signature</span><span class="item-tag">Vegan</span></div>
+    <!-- Hero Section -->
+    <section id="home" class="relative h-screen w-full overflow-hidden flex items-center">
+        <!-- Parallax Background -->
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center">
+            <div class="absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/80 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent to-transparent"></div>
         </div>
-        <div class="item-price">$5.75</div>
-      </div>
-      <div class="menu-item reveal reveal-delay-1">
-        <div>
-          <div class="item-name">Ceremonial Matcha</div>
-          <div class="item-desc">Uji-grade matcha, oat silk milk, light sweetener</div>
-          <div class="item-tags"><span class="item-tag">Vegan</span></div>
-        </div>
-        <div class="item-price">$6.50</div>
-      </div>
-      <div class="menu-item reveal">
-        <div>
-          <div class="item-name">Houjicha Tonic</div>
-          <div class="item-desc">Roasted Japanese green tea over sparkling water &amp; ice</div>
-          <div class="item-tags"><span class="item-tag">Refreshing</span><span class="item-tag">Vegan</span></div>
-        </div>
-        <div class="item-price">$5.50</div>
-      </div>
-      <div class="menu-item reveal reveal-delay-1">
-        <div>
-          <div class="item-name">Orange Blossom Fizz</div>
-          <div class="item-desc">Cold brew, orange blossom cordial, sparkling water</div>
-          <div class="item-tags"><span class="item-tag">New</span><span class="item-tag">Vegan</span></div>
-        </div>
-        <div class="item-price">$5.75</div>
-      </div>
-    </div>
 
-    <div class="menu-callout reveal">
-      <div class="callout-text">"Our beans travel from farm to roaster in under 30 days."</div>
-      <a href="story.html" class="callout-link">Learn About Our Sourcing →</a>
-    </div>
-  </div>
+        <div class="relative z-10 max-w-7xl mx-auto px-6 w-full">
+            <div class="lg:w-[65%] mt-20" data-aos="fade-right" data-aos-duration="1000">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="h-[1px] w-12 bg-brand-red"></div>
+                    <span class="text-brand-red text-xs font-bold uppercase tracking-[0.3em]">Premium South Mumbai Fitness</span>
+                </div>
+                
+                <h1 class="text-[70px] md:text-[100px] lg:text-[130px] leading-[0.85] mb-8">
+                    Transform <span class="text-outline">Your</span> <br/> 
+                    <span class="text-brand-red">Legacy.</span>
+                </h1>
 
-  <!-- BAKERY -->
-  <div id="cat-bakery" class="menu-category">
-    <div class="cat-header reveal">
-      <div class="cat-img">
-        <img src="https://images.unsplash.com/photo-1550617931-e17a7b70dce2?q=80&w=1200" alt="Bakery" loading="lazy" />
-      </div>
-      <div class="cat-header-text">
-        <span style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#b8935a;">Bakery</span>
-        <h2 class="cat-title" style="margin-top:0.8rem;">Fresh <span class="italic-word">Daily</span></h2>
-        <p class="cat-subtitle">Baked from scratch each morning before 6AM. Laminated doughs, natural levain, locally-sourced flour. The kind of baking that takes all night.</p>
-      </div>
-    </div>
+                <p class="text-white/50 max-w-md text-sm leading-relaxed mb-10 border-l-2 border-brand-red pl-6">
+                    Experience India's most exclusive high-performance ecosystem. 
+                    World-class equipment meets elite scientific training protocols for the urban warrior.
+                </p>
+                
+                <div class="flex flex-wrap gap-6">
+                    <button class="px-10 py-5 bg-brand-red text-black font-black uppercase italic tracking-tighter hover:scale-105 transition-transform shadow-[0_0_30px_rgba(255,46,46,0.4)]">
+                        Start Trial Now 
+                    </button>
+                    <button class="px-10 py-5 border border-white/20 font-black uppercase italic tracking-tighter hover:bg-white hover:text-black transition-all flex items-center gap-3">
+                        <i data-lucide="play" class="fill-current" size="18"></i> Watch Film
+                    </button>
+                </div>
+            </div>
+        </div>
 
-    <div class="section-divider">Laminated Pastries</div>
-    <div class="items-grid">
-      <div class="menu-item reveal">
-        <div>
-          <div class="item-name">Pistachio Croissant</div>
-          <div class="item-desc">Double-baked, frangipane, Sicilian pistachio cream, crushed nuts</div>
-          <div class="item-tags"><span class="item-tag">Bestseller</span></div>
-        </div>
-        <div class="item-price">$7.00</div>
-      </div>
-      <div class="menu-item reveal reveal-delay-1">
-        <div>
-          <div class="item-name">Charcoal Pain Chocolat</div>
-          <div class="item-desc">Activated charcoal dough, Valrhona 66% dark chocolate</div>
-          <div class="item-tags"><span class="item-tag">Signature</span></div>
-        </div>
-        <div class="item-price">$5.50</div>
-      </div>
-      <div class="menu-item reveal">
-        <div>
-          <div class="item-name">Classic Butter Croissant</div>
-          <div class="item-desc">AOP Isigny butter, 72-hour lamination, honeyed glaze</div>
-          <div class="item-tags"><span class="item-tag">Classic</span></div>
-        </div>
-        <div class="item-price">$4.50</div>
-      </div>
-      <div class="menu-item reveal reveal-delay-1">
-        <div>
-          <div class="item-name">Almond Croissant</div>
-          <div class="item-desc">Day-old croissant, almond cream, flaked almonds, powdered sugar</div>
-        </div>
-        <div class="item-price">$5.75</div>
-      </div>
-    </div>
+        <!-- Mouse Glow Element -->
+        <div id="mouse-glow" class="fixed w-[600px] h-[600px] bg-brand-red/10 rounded-full blur-[120px] pointer-events-none -z-1 transition-transform duration-75"></div>
+    </section>
 
-    <div class="section-divider">Small Cakes &amp; Bites</div>
-    <div class="items-grid">
-      <div class="menu-item reveal">
-        <div>
-          <div class="item-name">Rose Petal Financier</div>
-          <div class="item-desc">Brown butter, almond flour, edible dried rose petals</div>
-          <div class="item-tags"><span class="item-tag">Gluten-Light</span></div>
-        </div>
-        <div class="item-price">$4.50</div>
-      </div>
-      <div class="menu-item reveal reveal-delay-1">
-        <div>
-          <div class="item-name">Tahini Chocolate Tart</div>
-          <div class="item-desc">Dark chocolate ganache, white sesame tahini, fleur de sel</div>
-          <div class="item-tags"><span class="item-tag">Signature</span></div>
-        </div>
-        <div class="item-price">$8.00</div>
-      </div>
-      <div class="menu-item reveal">
-        <div>
-          <div class="item-name">Yuzu Madeleines</div>
-          <div class="item-desc">Classic shell cakes with Japanese yuzu zest, two per order</div>
-          <div class="item-tags"><span class="item-tag">New</span></div>
-        </div>
-        <div class="item-price">$5.00</div>
-      </div>
-      <div class="menu-item reveal reveal-delay-1">
-        <div>
-          <div class="item-name">Salted Caramel Kouign-Amann</div>
-          <div class="item-desc">Caramelized layers, sea salt, individual portion</div>
-        </div>
-        <div class="item-price">$6.00</div>
-      </div>
-    </div>
-  </div>
+    <!-- Programs Section -->
+    <section id="programs" class="py-32 bg-brand-black relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-24" data-aos="fade-up">
+                <span class="text-brand-red font-bold uppercase tracking-[0.4em] text-sm">Expertly Crafted</span>
+                <h2 class="text-5xl md:text-8xl mt-4">ELITE <span class="text-brand-red">PROGRAMS</span></h2>
+            </div>
 
-  <!-- KITCHEN -->
-  <div id="cat-kitchen" class="menu-category">
-    <div class="cat-header reveal">
-      <div class="cat-img">
-        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200" alt="Kitchen" loading="lazy" />
-      </div>
-      <div class="cat-header-text">
-        <span style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#b8935a;">Kitchen</span>
-        <h2 class="cat-title" style="margin-top:0.8rem;">Considered <span class="italic-word">Plates</span></h2>
-        <p class="cat-subtitle">Our kitchen closes at 4PM. Each dish is composed with the same precision we apply to every pour — whole ingredients, thoughtful preparation, no shortcuts.</p>
-      </div>
-    </div>
-
-    <div class="section-divider">Morning</div>
-    <div class="items-grid">
-      <div class="menu-item reveal">
-        <div>
-          <div class="item-name">Truffle Cloud Eggs</div>
-          <div class="item-desc">Whipped egg whites baked stiff, yolk confit center, fresh black truffle shavings, brioche soldiers</div>
-          <div class="item-tags"><span class="item-tag">Signature</span><span class="item-tag">Vegetarian</span></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[1px] bg-white/5 border border-white/5 overflow-hidden">
+                <!-- Card 1 -->
+                <div class="program-card bg-brand-black p-12 min-h-[350px] border-b-2 border-transparent hover:border-brand-red transition-all group relative cursor-pointer" data-aos="fade-up">
+                    <div class="text-[10px] text-white/20 uppercase font-black mb-10">01</div>
+                    <i data-lucide="dumbbell" class="absolute top-12 right-12 opacity-0 group-hover:opacity-20 transition-all text-brand-red" size="48"></i>
+                    <h3 class="text-3xl mb-4 group-hover:translate-x-2 transition-transform duration-500">Strength Training</h3>
+                    <p class="text-[11px] text-white/50 uppercase tracking-widest leading-loose">Master the iron with elite hypertrophy protocols.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="program-card bg-brand-black p-12 min-h-[350px] border-b-2 border-transparent hover:border-brand-red transition-all group relative cursor-pointer" data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-[10px] text-white/20 uppercase font-black mb-10">02</div>
+                    <i data-lucide="zap" class="absolute top-12 right-12 opacity-0 group-hover:opacity-20 transition-all text-brand-red" size="48"></i>
+                    <h3 class="text-3xl mb-4 group-hover:translate-x-2 transition-transform duration-500">CrossFit Elite</h3>
+                    <p class="text-[11px] text-white/50 uppercase tracking-widest leading-loose">Functional dominance for the metabolic warrior.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="program-card bg-brand-black p-12 min-h-[350px] border-b-2 border-transparent hover:border-brand-red transition-all group relative cursor-pointer" data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-[10px] text-white/20 uppercase font-black mb-10">03</div>
+                    <i data-lucide="trending-up" class="absolute top-12 right-12 opacity-0 group-hover:opacity-20 transition-all text-brand-red" size="48"></i>
+                    <h3 class="text-3xl mb-4 group-hover:translate-x-2 transition-transform duration-500">Fat Logic</h3>
+                    <p class="text-[11px] text-white/50 uppercase tracking-widest leading-loose">Precision data-driven shredding cycles.</p>
+                </div>
+            </div>
         </div>
-        <div class="item-price">$16.50</div>
-      </div>
-      <div class="menu-item reveal reveal-delay-1">
-        <div>
-          <div class="item-name">Avocado &amp; Dukkah Toast</div>
-          <div class="item-desc">House sourdough, smashed avocado, Egyptian dukkah, pomegranate, lemon oil</div>
-          <div class="item-tags"><span class="item-tag">Vegan</span></div>
-        </div>
-        <div class="item-price">$14.00</div>
-      </div>
-      <div class="menu-item reveal">
-        <div>
-          <div class="item-name">Gruyère Croque Monsieur</div>
-          <div class="item-desc">Sourdough, aged Gruyère béchamel, sliced jambon sec, Dijon</div>
-          <div class="item-tags"><span class="item-tag">Classic</span></div>
-        </div>
-        <div class="item-price">$15.00</div>
-      </div>
-      <div class="menu-item reveal reveal-delay-1">
-        <div>
-          <div class="item-name">Soft Scramble Bowl</div>
-          <div class="item-desc">Slow-cooked eggs, crème fraîche, chives, toasted rye croutons</div>
-          <div class="item-tags"><span class="item-tag">Vegetarian</span></div>
-        </div>
-        <div class="item-price">$13.50</div>
-      </div>
-    </div>
+    </section>
 
-    <div class="section-divider">Lunch &amp; Plates</div>
-    <div class="items-grid">
-      <div class="menu-item reveal">
-        <div>
-          <div class="item-name">Saffron Salmon Tartine</div>
-          <div class="item-desc">Cold-smoked salmon, saffron labneh, cucumber ribbons, dill, rye bread</div>
-          <div class="item-tags"><span class="item-tag">Staff Pick</span></div>
+    <!-- Transformations / Stats Section -->
+    <section id="stats" class="py-24 border-y border-white/5 bg-brand-black/50 overflow-hidden bg-mesh">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-wrap items-center justify-between gap-12 text-center md:text-left">
+                <div class="flex-1 min-w-[150px]">
+                    <div class="text-6xl md:text-7xl font-black italic tracking-tighter" data-counter="5000">0</div>
+                    <div class="text-[10px] uppercase tracking-tighter opacity-50 font-bold mt-2">Active Members</div>
+                </div>
+                <div class="hidden lg:block h-12 w-[1px] bg-white/10"></div>
+                <div class="flex-1 min-w-[150px]">
+                    <div class="text-6xl md:text-7xl font-black italic tracking-tighter text-brand-red" data-counter="1200">0</div>
+                    <div class="text-[10px] uppercase tracking-tighter opacity-50 font-bold mt-2">Total Transformations</div>
+                </div>
+                <div class="hidden lg:block h-12 w-[1px] bg-white/10"></div>
+                <div class="flex-1 min-w-[150px]">
+                    <div class="text-6xl md:text-7xl font-black italic tracking-tighter" data-counter="15">0</div>
+                    <div class="text-[10px] uppercase tracking-tighter opacity-50 font-bold mt-2">Elite Coaches</div>
+                </div>
+            </div>
+
+            <!-- Visual Reveal -->
+            <div class="mt-32 grid grid-cols-1 md:grid-cols-2 gap-px bg-white/5">
+                <div class="relative h-[600px] overflow-hidden group" data-aos="fade-right">
+                    <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110 grayscale" alt="Start">
+                    <div class="absolute top-10 left-10 p-4 bg-brand-black font-black uppercase text-xs italic">Day 01</div>
+                </div>
+                <div class="relative h-[600px] overflow-hidden group border-l-4 border-brand-red" data-aos="fade-left">
+                    <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2ec89c?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" alt="Peak">
+                    <div class="absolute top-10 right-10 p-4 bg-brand-red font-black uppercase text-xs italic">Week 12</div>
+                </div>
+            </div>
         </div>
-        <div class="item-price">$18.00</div>
-      </div>
-      <div class="menu-item reveal reveal-delay-1">
-        <div>
-          <div class="item-name">Heritage Tomato Salad</div>
-          <div class="item-desc">Heirloom tomatoes, buffalo mozzarella di bufala, aged balsamic, basil oil</div>
-          <div class="item-tags"><span class="item-tag">Seasonal</span><span class="item-tag">Vegetarian</span></div>
+    </section>
+
+    <!-- Trainers -->
+    <section id="trainers" class="py-32">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-20">
+                <div data-aos="fade-right">
+                    <span class="text-brand-red font-bold uppercase tracking-[0.4em] text-sm">Professional Guidance</span>
+                    <h2 class="text-5xl md:text-8xl mt-4">MEET THE <br/><span class="text-brand-red">MASTERS</span></h2>
+                </div>
+                <p class="text-white/40 max-w-sm border-l border-white/10 pl-8 hidden md:block" data-aos="fade-left">
+                    Our architects of change are certified by international boards and have transformed over 1000+ lives.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Trainer 1 -->
+                <div class="group cursor-pointer" data-aos="fade-up">
+                    <div class="relative h-[450px] overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
+                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover grayscale transition-all duration-700 group-hover:scale-110" alt="Vikram">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent opacity-60"></div>
+                        <div class="absolute bottom-10 left-10">
+                            <h3 class="text-2xl mb-1">Vikram Singh</h3>
+                            <p class="text-brand-red text-[10px] font-bold tracking-[0.3em] uppercase">Head Architect</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Trainer 2 -->
+                <div class="group cursor-pointer" data-aos="fade-up" data-aos-delay="100">
+                    <div class="relative h-[450px] overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
+                        <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110" alt="Priya">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent opacity-60"></div>
+                        <div class="absolute bottom-10 left-10">
+                            <h3 class="text-2xl mb-1">Priya Sharma</h3>
+                            <p class="text-brand-red text-[10px] font-bold tracking-[0.3em] uppercase">HIIT Specialist</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- More trainers... (simplified for code length) -->
+                <div class="group cursor-pointer" data-aos="fade-up" data-aos-delay="200">
+                    <div class="relative h-[450px] overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110" alt="Arjun">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent opacity-60"></div>
+                        <div class="absolute bottom-10 left-10">
+                            <h3 class="text-2xl mb-1">Arjun Malhotra</h3>
+                            <p class="text-brand-red text-[10px] font-bold tracking-[0.3em] uppercase">Strength Coach</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="group cursor-pointer" data-aos="fade-up" data-aos-delay="300">
+                    <div class="relative h-[450px] overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
+                        <img src="https://images.unsplash.com/photo-1597452485669-2c7bb5fef90d?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110" alt="Rohan">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent opacity-60"></div>
+                        <div class="absolute bottom-10 left-10">
+                            <h3 class="text-2xl mb-1">Rohan Deshmukh</h3>
+                            <p class="text-brand-red text-[10px] font-bold tracking-[0.3em] uppercase">Mobility Guru</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="item-price">$16.00</div>
-      </div>
-      <div class="menu-item reveal">
-        <div>
-          <div class="item-name">Mushroom &amp; Taleggio Tart</div>
-          <div class="item-desc">Wild mushroom duxelles, creamy Taleggio, thyme, puff pastry</div>
-          <div class="item-tags"><span class="item-tag">Vegetarian</span></div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-32 bg-[#1A1A1A]/20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-24" data-aos="fade-up">
+                <h2 class="text-5xl md:text-8xl">SELECT YOUR <span class="text-brand-red">TIER</span></h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                <!-- Plan 1 -->
+                <div class="p-12 bg-brand-black border border-white/5 hover:border-brand-red transition-all duration-500 group" data-aos="fade-up">
+                    <h3 class="text-2xl italic mb-6">Basic Gear</h3>
+                    <div class="text-6xl font-black italic text-white mb-8">₹2,999<span class="text-xs uppercase opacity-40 ml-2">/mo</span></div>
+                    <ul class="space-y-4 mb-12 text-sm text-white/50">
+                        <li><i data-lucide="check" class="inline mr-2 text-brand-red" size="14"></i> Complete Gym Access</li>
+                        <li><i data-lucide="check" class="inline mr-2 text-brand-red" size="14"></i> Lockers & Showers</li>
+                        <li><i data-lucide="check" class="inline mr-2 text-brand-red" size="14"></i> 2 Guest Passes / Mo</li>
+                    </ul>
+                    <button class="w-full py-4 border border-white/20 hover:bg-brand-red hover:text-black font-black uppercase italic italic tracking-widest transition-all">Join Club</button>
+                </div>
+                <!-- Plan 2 Elite (Highlighted) -->
+                <div class="p-16 bg-brand-black border-2 border-brand-red shadow-[0_0_50px_rgba(255,46,46,0.2)] scale-105 z-10" data-aos="zoom-in">
+                    <div class="absolute top-0 right-0 bg-brand-red text-black px-6 py-1 font-black uppercase text-[10px] italic">Most Popular</div>
+                    <h3 class="text-3xl italic mb-6">Beast Mode</h3>
+                    <div class="text-7xl font-black italic text-brand-red mb-10">₹5,499<span class="text-sm uppercase opacity-40 ml-2 text-white">/mo</span></div>
+                    <ul class="space-y-5 mb-14 text-white/70">
+                        <li><i data-lucide="check" class="inline mr-2 text-brand-red" size="16"></i> 24/7 Priority Access</li>
+                        <li><i data-lucide="check" class="inline mr-2 text-brand-red" size="16"></i> 4 Personal Training Sessions</li>
+                        <li><i data-lucide="check" class="inline mr-2 text-brand-red" size="16"></i> Nutrition Mastery Guide</li>
+                        <li><i data-lucide="check" class="inline mr-2 text-brand-red" size="16"></i> Recovery Spa & Sauna</li>
+                    </ul>
+                    <button class="w-full py-5 bg-brand-red text-black font-black uppercase italic tracking-widest hover:scale-105 transition-transform">Get Started</button>
+                </div>
+                <!-- Plan 3 -->
+                <div class="p-12 bg-brand-black border border-white/5 hover:border-brand-red transition-all duration-500 group" data-aos="fade-up">
+                    <h3 class="text-2xl italic mb-6">VIP Legacy</h3>
+                    <div class="text-6xl font-black italic text-white mb-8">₹9,999<span class="text-xs uppercase opacity-40 ml-2">/mo</span></div>
+                    <ul class="space-y-4 mb-12 text-sm text-white/50">
+                        <li><i data-lucide="check" class="inline mr-2 text-brand-red" size="14"></i> All Elite Benefits</li>
+                        <li><i data-lucide="check" class="inline mr-2 text-brand-red" size="14"></i> Unlimited PT sessions</li>
+                        <li><i data-lucide="check" class="inline mr-2 text-brand-red" size="14"></i> Private Training Suite</li>
+                    </ul>
+                    <button class="w-full py-4 border border-white/20 hover:bg-brand-red hover:text-black font-black uppercase italic tracking-widest transition-all">Go Elite</button>
+                </div>
+            </div>
         </div>
-        <div class="item-price">$17.00</div>
-      </div>
-      <div class="menu-item reveal reveal-delay-1">
-        <div>
-          <div class="item-name">Chicken Confit Sandwich</div>
-          <div class="item-desc">Slow-cooked chicken thigh, aioli, pickled shallots, brioche bun</div>
+    </section>
+
+    <!-- Footer Banner -->
+    <section class="py-40 relative overflow-hidden text-center">
+        <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=2070&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-20 bg-fixed" alt="Footer Banner">
+        <div class="relative z-10 max-w-5xl mx-auto px-6">
+            <h2 class="text-6xl md:text-[120px] leading-tight mb-12" data-aos="zoom-out">UNLEASH YOUR <span class="text-outline">POTENTIAL</span></h2>
+            <button class="px-16 py-6 bg-brand-red text-black font-black uppercase italic tracking-[0.3em] text-xl hover:scale-110 transition-transform shadow-[0_0_50px_rgba(255,46,46,0.3)]">
+                JOIN THE TRIBE NOW
+            </button>
         </div>
-        <div class="item-price">$16.50</div>
-      </div>
-    </div>
+    </section>
 
-    <div class="menu-callout reveal">
-      <div class="callout-text">"Our kitchen team sources produce from three local farms."</div>
-      <a href="reservations.html" class="callout-link">Reserve a Table →</a>
-    </div>
-  </div>
+    <!-- Final Footer -->
+    <footer class="py-20 border-t border-white/5 bg-brand-black">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-10">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-brand-red rotate-45 flex items-center justify-center">
+                    <div class="w-3 h-3 bg-black -rotate-45"></div>
+                </div>
+                <span class="text-2xl font-display font-black tracking-tighter italic">IRON<span class="text-brand-red">AURA</span></span>
+            </div>
+            
+            <div class="flex gap-12 text-[10px] font-bold uppercase tracking-[0.3em] text-white/40">
+                <a href="#" class="hover:text-white transition-colors">Privacy</a>
+                <a href="#" class="hover:text-white transition-colors">Safety</a>
+                <a href="#" class="hover:text-white transition-colors">Legacy</a>
+            </div>
 
-  <!-- SPECIALS -->
-  <div id="cat-specials" class="menu-category">
-    <div class="cat-header reveal">
-      <div class="cat-img" style="background:#1a1a18; display:flex; align-items:center; justify-content:center;">
-        <span style="font-family:'Playfair Display',serif; font-size:4rem; color:rgba(184,147,90,0.3); font-style:italic;">✦</span>
-      </div>
-      <div class="cat-header-text">
-        <span style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#b8935a;">Seasonal Specials</span>
-        <h2 class="cat-title" style="margin-top:0.8rem;">Series <span class="italic-word">'26</span></h2>
-        <p class="cat-subtitle">A rotating collection of limited-run creations. Available while stocks last. Updated monthly as the seasons shift and new ingredients arrive.</p>
-      </div>
-    </div>
-
-    <div class="section-divider">May — June 2026</div>
-    <div class="items-grid">
-      <div class="menu-item reveal">
-        <div>
-          <div class="item-name">Elderflower Espresso Tonic</div>
-          <div class="item-desc">House elderflower cordial, double espresso, tonic water, dried flowers</div>
-          <div class="item-tags"><span class="item-tag">Limited</span><span class="item-tag">Vegan</span></div>
+            <div class="flex gap-6 mt-4 md:mt-0">
+                <a href="#" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-brand-red hover:text-black transition-all"><i data-lucide="instagram" size="18"></i></a>
+                <a href="#" class="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-brand-red hover:text-black transition-all"><i data-lucide="twitter" size="18"></i></a>
+            </div>
         </div>
-        <div class="item-price">$7.50</div>
-      </div>
-      <div class="menu-item reveal reveal-delay-1">
-        <div>
-          <div class="item-name">Cherry Blossom Latte</div>
-          <div class="item-desc">Sakura extract, white chocolate, steamed oat milk, dried petals</div>
-          <div class="item-tags"><span class="item-tag">Limited</span></div>
-        </div>
-        <div class="item-price">$7.25</div>
-      </div>
-      <div class="menu-item reveal">
-        <div>
-          <div class="item-name">Strawberry Basil Tart</div>
-          <div class="item-desc">Seasonal Californian strawberries, basil pastry cream, almond tart shell</div>
-          <div class="item-tags"><span class="item-tag">Limited</span><span class="item-tag">Vegetarian</span></div>
-        </div>
-        <div class="item-price">$9.00</div>
-      </div>
-      <div class="menu-item reveal reveal-delay-1">
-        <div>
-          <div class="item-name">Pea &amp; Mint Toast</div>
-          <div class="item-desc">Fresh pea purée, whipped ricotta, mint oil, pickled radish, focaccia</div>
-          <div class="item-tags"><span class="item-tag">Limited</span><span class="item-tag">Vegetarian</span></div>
-        </div>
-        <div class="item-price">$14.50</div>
-      </div>
-    </div>
-  </div>
+        <p class="text-center text-[9px] text-white/20 mt-16 tracking-[0.4em]">© 2026 IRON AURA PERFORMANCE LABS • SOUTH MUMBAI • INDIA</p>
+    </footer>
 
-</div><!-- end menu-body -->
+    <!-- Scripting -->
+    <script>
+        // Init Icons
+        lucide.createIcons();
+        
+        // Init Animations
+        AOS.init({ once: true });
 
-<!-- Footer -->
-<footer>
-  <div class="footer-inner">
-    <div>
-      <div class="footer-logo">Lumière</div>
-      <div class="footer-tagline">"An architectural exploration of taste. Intersection of craft and minimalism."</div>
-    </div>
-    <div>
-      <div class="footer-heading">Navigate</div>
-      <ul class="footer-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="story.html">Our Story</a></li>
-        <li><a href="menu.html">Menu</a></li>
-        <li><a href="reservations.html">Reservations</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="footer-heading">Visit</div>
-      <p class="footer-address">124 Arts District West,<br />San Francisco, CA 94103<br /><br />Daily 8AM – 6PM<br />Kitchen closes 4PM</p>
-    </div>
-    <div>
-      <div class="footer-heading">Connect</div>
-      <ul class="footer-links">
-        <li><a href="#">Instagram</a></li>
-        <li><a href="#">Journal</a></li>
-        <li><a href="#">Newsletter</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2026 Lumière Collective</span>
-    <span>Crafted with precision · San Francisco</span>
-  </div>
-</footer>
+        // Loader
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 1000);
+            }, 1500);
+        });
 
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('page-transition').classList.add('out');
-  });
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('glass-dark');
+                navbar.classList.add('py-4');
+                navbar.classList.remove('py-6');
+            } else {
+                navbar.classList.remove('glass-dark');
+                navbar.classList.add('py-6');
+                navbar.classList.remove('py-4');
+            }
+        });
 
-  document.querySelectorAll('a[href]').forEach(link => {
-    const href = link.getAttribute('href');
-    if (href && !href.startsWith('#') && !href.startsWith('http') && href.endsWith('.html')) {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        const pt = document.getElementById('page-transition');
-        pt.classList.remove('out');
-        pt.style.transform = 'translateY(0)';
-        pt.style.transition = 'transform 0.6s cubic-bezier(0.76,0,0.24,1)';
-        setTimeout(() => { window.location.href = href; }, 620);
-      });
-    }
-  });
+        // Mobile Menu
+        const mobileMenu = document.getElementById('mobile-menu');
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+            document.body.style.overflow = mobileMenu.classList.contains('hidden') ? 'auto' : 'hidden';
+        }
 
-  window.addEventListener('scroll', () => {
-    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
-  });
+        // Mouse Glow
+        const glow = document.getElementById('mouse-glow');
+        window.addEventListener('mousemove', (e) => {
+            glow.style.transform = `translate(${e.clientX - 300}px, ${e.clientY - 300}px)`;
+        });
 
-  function switchCat(cat, btn) {
-    document.querySelectorAll('.menu-category').forEach(c => c.classList.remove('active'));
-    document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
-    document.getElementById('cat-' + cat).classList.add('active');
-    btn.classList.add('active');
-    // re-trigger reveals
-    document.querySelectorAll('#cat-' + cat + ' .reveal').forEach(el => {
-      el.classList.remove('visible');
-      setTimeout(() => observer.observe(el), 50);
-    });
-    window.scrollTo({ top: document.querySelector('.cat-tabs-wrap').offsetTop - 10, behavior: 'smooth' });
-  }
+        // Counter Animation
+        const counters = document.querySelectorAll('[data-counter]');
+        const observerOptions = { threshold: 0.5 };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = entry.target;
+                    const end = parseInt(target.getAttribute('data-counter'));
+                    let current = 0;
+                    const timer = setInterval(() => {
+                        current += Math.ceil(end / 50);
+                        if (current >= end) {
+                            target.innerText = end + (end > 100 ? '+' : '');
+                            clearInterval(timer);
+                        } else {
+                            target.innerText = current;
+                        }
+                    }, 30);
+                    observer.unobserve(target);
+                }
+            });
+        }, observerOptions);
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-</script>
+        counters.forEach(c => observer.observe(c));
+    </script>
 </body>
 </html>
